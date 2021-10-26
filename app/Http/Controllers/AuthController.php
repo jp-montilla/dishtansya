@@ -40,4 +40,8 @@ class AuthController extends Controller
             "access_token" => $token,
         ], 201);
     }
+
+    public function logout(Request $request){
+        auth()->user()->tokens()->delete();
+    }
 }
