@@ -18,7 +18,6 @@ class OrderController extends Controller
         $this->orderRepo = $orderRepo;
     }
 
-
     public function store(OrderRequest $request){
         $fields = $request->validated();
 

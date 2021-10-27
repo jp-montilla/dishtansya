@@ -41,6 +41,7 @@ class OrderApiTest extends TestCase
         $loginData = ['email' => 'sample@test.com', 'password' => 'sample123'];
 
         $response = $this->json('POST', 'api/login', $loginData, ['Accept' => 'application/json'])->decodeResponseJson();
+        
         $this->withHeader('Authorization', 'Bearer ' . $response['access_token'])
             ->json('POST', 'api/order', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)

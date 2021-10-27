@@ -48,7 +48,6 @@ class LoginApiTest extends TestCase
         ]);
     }
 
-
     public function testSuccessfulLogin()
     {
         $user = User::factory()->create([
