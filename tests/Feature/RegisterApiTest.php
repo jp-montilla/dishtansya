@@ -71,7 +71,7 @@ class RegisterApiTest extends TestCase
         $this->json('POST', 'api/register', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "The email must be a valid email address."
+                "message" => "Invalid email address"
         ]);
     }
 }
