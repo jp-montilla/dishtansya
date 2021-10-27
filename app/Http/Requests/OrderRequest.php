@@ -24,8 +24,8 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required',
+            'product_id' => 'required|exists:products,id|numeric',
+            'quantity' => 'required|numeric',
         ];
     }
 
@@ -34,7 +34,9 @@ class OrderRequest extends FormRequest
         return [
             'product_id.required' => 'Product id is required',
             'product_id.exists' => 'Product not found',
+            'product_id.numeric' => 'Product id is not a number',
             'quantity.required' => 'Quantity is required',
+            'quantity.numeric' => 'Quantity is not a number',
         ];
     }
 }

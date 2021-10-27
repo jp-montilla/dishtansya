@@ -54,7 +54,7 @@ class LoginApiTest extends TestCase
         $user = User::factory()->create([
             'email' => 'sample@test.com',
             'password' => bcrypt('sample123'),
-         ]);
+        ]);
 
 
         $loginData = ['email' => 'sample@test.com', 'password' => 'sample123'];
@@ -63,7 +63,7 @@ class LoginApiTest extends TestCase
             ->assertStatus(201)
             ->assertJsonStructure([
                 "access_token",
-            ]);
+        ]);
     }
 
     public function testInvalidCredentials()

@@ -19,9 +19,8 @@ class ProductSeeder extends Seeder
         $faker = Faker::create();
 
         foreach (range(1, 200) as $index)  {
-            Product::create([
+            Product::factory()->create([
                 'name' => "Product $index",
-                'available_stock' => $faker->numberBetween($min = 1, $max = 100),
             ]);
         }
     }
