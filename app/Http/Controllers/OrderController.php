@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\Product;
+use App\Repositories\OrderRepo;
 
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    protected $orderRepo;
+
+    public function __construct(OrderRepo $orderRepo)
+    {
+        $this->orderRepo = $orderRepo;
+    }
+
+
     public function store(OrderRequest $request){
         $fields = $request->validated();
 
@@ -25,11 +34,17 @@ class OrderController extends Controller
             'available_stock' => $remaining_stock,
         ]);
 
-        Order::create([
+        $this->orderRepo->create([
             'user_id' => auth()->user()->id,
             'product_id' => $product->id,
             'quantity' => $fields['quantity'],
         ]);
+
+        // Order::create([
+        //     'user_id' => auth()->user()->id,
+        //     'product_id' => $product->id,
+        //     'quantity' => $fields['quantity'],
+        // ]);
 
         return response([
             "message" => "You have successfully ordered this product.",
