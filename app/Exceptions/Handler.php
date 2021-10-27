@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +39,15 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (ThrottleRequestsException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Too many login attempts'
+                ], 429);
+            }
+        });
     }
+
+    
 }
