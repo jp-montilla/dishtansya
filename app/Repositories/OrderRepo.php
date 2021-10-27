@@ -15,7 +15,8 @@ class OrderRepo
     }
 
     public function create($data){
-        $this->order->create($data);
+        $data['user_id'] = auth()->user()->id;
+        return $this->order->create($data);
     }
 
 }

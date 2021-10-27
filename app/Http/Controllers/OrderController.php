@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
+use App\Mail\MyTestMail;
 use App\Models\Order;
 use App\Models\Product;
 use App\Repositories\OrderRepo;
@@ -34,17 +35,12 @@ class OrderController extends Controller
             'available_stock' => $remaining_stock,
         ]);
 
-        $this->orderRepo->create([
-            'user_id' => auth()->user()->id,
+        $order = $this->orderRepo->create([
             'product_id' => $product->id,
             'quantity' => $fields['quantity'],
         ]);
 
-        // Order::create([
-        //     'user_id' => auth()->user()->id,
-        //     'product_id' => $product->id,
-        //     'quantity' => $fields['quantity'],
-        // ]);
+        \Mail::to('johnpaul.montilla@xurpas.com')->send(new MyTestMail($order));
 
         return response([
             "message" => "You have successfully ordered this product.",
