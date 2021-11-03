@@ -21,10 +21,8 @@ Route::post('/login', [AuthController::class, 'login'])->name('login')->middlewa
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
-
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
-
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
