@@ -16,6 +16,7 @@ class LoginApiTest extends TestCase
         $userData = [
             'password' => 'johndoe',
         ];
+        
         $this->json('POST', 'api/login', $userData)
             ->assertStatus(400)
             ->assertJson([
@@ -28,6 +29,7 @@ class LoginApiTest extends TestCase
         $userData = [
             'email' => 'john@doe',
         ];
+
         $this->json('POST', 'api/login', $userData)
             ->assertStatus(400)
             ->assertJson([
@@ -35,7 +37,8 @@ class LoginApiTest extends TestCase
             ]);
     }
 
-    public function testValidEmail(){
+    public function testValidEmail()
+    {
         $userData = [
             'email' => 'not an email',
             'password' => 'password',
@@ -70,7 +73,6 @@ class LoginApiTest extends TestCase
             'email' => 'sample@test.com',
             'password' => bcrypt('sample123'),
          ]);
-
 
         $loginData = ['email' => 'random@email.com', 'password' => 'sample123'];
 

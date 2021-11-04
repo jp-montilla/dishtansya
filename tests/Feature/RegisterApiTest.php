@@ -16,6 +16,7 @@ class RegisterApiTest extends TestCase
         $userData = [
             'password' => 'johndoe',
         ];
+
         $this->json('POST', 'api/register', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
@@ -28,6 +29,7 @@ class RegisterApiTest extends TestCase
         $userData = [
             'email' => 'john@doe',
         ];
+
         $this->json('POST', 'api/register', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
@@ -35,7 +37,8 @@ class RegisterApiTest extends TestCase
             ]);
     }
 
-    public function testSuccessfullRegistration(){
+    public function testSuccessfullRegistration()
+    {
         $userData = [
             'email' => 'email@email.com',
             'password' => 'password',
@@ -48,7 +51,8 @@ class RegisterApiTest extends TestCase
             ]);
     }
 
-    public function testEmailAlreadyTaken(){
+    public function testEmailAlreadyTaken()
+    {
         $user = User::factory()->create();
         $userData = [
             'email' => $user->email,
@@ -62,7 +66,8 @@ class RegisterApiTest extends TestCase
         ]);
     }
 
-    public function testValidEmail(){
+    public function testValidEmail()
+    {
         $userData = [
             'email' => 'not an email',
             'password' => 'password',

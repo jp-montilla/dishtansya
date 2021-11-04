@@ -18,7 +18,8 @@ class ProductSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        foreach (range(1, 200) as $index)  {
+        foreach (range(1, 200) as $index)
+        {
             Product::factory()->create([
                 'name' => "Product $index",
             ]);

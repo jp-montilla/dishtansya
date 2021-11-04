@@ -23,7 +23,8 @@ class OrderController extends Controller
 
         $product = Product::find($fields['product_id']);
 
-        if ($product->available_stock < $fields['quantity']){
+        if ($product->available_stock < $fields['quantity'])
+        {
             return response([
                 'message' => 'Failed to order this product due to unavailability of the stock',
             ], 400);

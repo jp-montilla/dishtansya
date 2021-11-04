@@ -29,7 +29,7 @@ class OrderApiTest extends TestCase
 
     public function testProductIdFieldRequired()
     {
-        $user = User::factory()->create([
+        User::factory()->create([
             'email' => 'sample@test.com',
             'password' => 'sample123',
         ]);
