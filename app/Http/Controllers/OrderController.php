@@ -25,7 +25,7 @@ class OrderController extends Controller
 
         if ($product->available_stock < $fields['quantity']){
             return response([
-                "message" => "Failed to order this product due to unavailability of the stock",
+                'message' => 'Failed to order this product due to unavailability of the stock',
             ], 400);
         }
 
@@ -39,10 +39,10 @@ class OrderController extends Controller
             'quantity' => $fields['quantity'],
         ]);
 
-        \Mail::to('johnpaul.montilla@xurpas.com')->send(new MyTestMail($order));
+        \Mail::to(auth()->user()->email)->send(new MyTestMail($order));
 
         return response([
-            "message" => "You have successfully ordered this product.",
+            'message' => 'You have successfully ordered this product.',
         ], 201);
     }
 }

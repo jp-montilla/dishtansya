@@ -14,37 +14,37 @@ class LoginApiTest extends TestCase
     public function testEmailFieldRequired()
     {
         $userData = [
-            "password" => "johndoe",
+            'password' => 'johndoe',
         ];
-        $this->json('POST', 'api/login', $userData, ['Accept' => 'application/json'])
+        $this->json('POST', 'api/login', $userData)
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Email is required"
+                'message' => 'Email is required'
             ]);
     }
 
     public function testPasswordFieldRequired()
     {
         $userData = [
-            "email" => "john@doe",
+            'email' => 'john@doe',
         ];
-        $this->json('POST', 'api/login', $userData, ['Accept' => 'application/json'])
+        $this->json('POST', 'api/login', $userData)
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Password is required"
+                'message' => 'Password is required'
             ]);
     }
 
     public function testValidEmail(){
         $userData = [
-            "email" => 'not an email',
-            "password" => "password",
+            'email' => 'not an email',
+            'password' => 'password',
         ];
 
-        $this->json('POST', 'api/login', $userData, ['Accept' => 'application/json'])
+        $this->json('POST', 'api/login', $userData)
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Invalid email address"
+                'message' => 'Invalid email address'
         ]);
     }
 
@@ -52,16 +52,15 @@ class LoginApiTest extends TestCase
     {
         $user = User::factory()->create([
             'email' => 'sample@test.com',
-            'password' => bcrypt('sample123'),
+            'password' => 'sample123',
         ]);
-
 
         $loginData = ['email' => 'sample@test.com', 'password' => 'sample123'];
 
-        $this->json('POST', 'api/login', $loginData, ['Accept' => 'application/json'])
+        $this->json('POST', 'api/login', $loginData)
             ->assertStatus(201)
             ->assertJsonStructure([
-                "access_token",
+                'access_token',
         ]);
     }
 
@@ -75,10 +74,11 @@ class LoginApiTest extends TestCase
 
         $loginData = ['email' => 'random@email.com', 'password' => 'sample123'];
 
-        $this->json('POST', 'api/login', $loginData, ['Accept' => 'application/json'])
+        $this->json('POST', 'api/login', $loginData)
             ->assertStatus(401)
             ->assertJson([
-                "message" => "Invalid credentials"
+                'message' => 'Invalid credentials'
         ]);
     }
 }
+

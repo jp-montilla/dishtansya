@@ -14,64 +14,64 @@ class RegisterApiTest extends TestCase
     public function testEmailFieldRequired()
     {
         $userData = [
-            "password" => "johndoe",
+            'password' => 'johndoe',
         ];
         $this->json('POST', 'api/register', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Email is required"
+                'message' => 'Email is required'
             ]);
     }
 
     public function testPasswordFieldRequired()
     {
         $userData = [
-            "email" => "john@doe",
+            'email' => 'john@doe',
         ];
         $this->json('POST', 'api/register', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Password is required"
+                'message' => 'Password is required'
             ]);
     }
 
     public function testSuccessfullRegistration(){
         $userData = [
-            "email" => 'email@email.com',
-            "password" => "password",
+            'email' => 'email@email.com',
+            'password' => 'password',
         ];
 
         $this->json('POST', 'api/register', $userData, ['Accept' => 'application/json'])
             ->assertStatus(201)
             ->assertJson([
-                "message" => "User successfully registered"
+                'message' => 'User successfully registered'
             ]);
     }
 
     public function testEmailAlreadyTaken(){
         $user = User::factory()->create();
         $userData = [
-            "email" => $user->email,
-            "password" => "password",
+            'email' => $user->email,
+            'password' => 'password',
         ];
 
         $this->json('POST', 'api/register', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Email already taken"
+                'message' => 'Email already taken'
         ]);
     }
 
     public function testValidEmail(){
         $userData = [
-            "email" => 'not an email',
-            "password" => "password",
+            'email' => 'not an email',
+            'password' => 'password',
         ];
 
         $this->json('POST', 'api/register', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Invalid email address"
+                'message' => 'Invalid email address'
         ]);
     }
 }

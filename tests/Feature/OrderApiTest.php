@@ -31,7 +31,7 @@ class OrderApiTest extends TestCase
     {
         $user = User::factory()->create([
             'email' => 'sample@test.com',
-            'password' => bcrypt('sample123'),
+            'password' => 'sample123',
         ]);
 
         $userData = [
@@ -55,7 +55,7 @@ class OrderApiTest extends TestCase
     {
         User::factory()->create([
             'email' => 'sample@test.com',
-            'password' => bcrypt('sample123'),
+            'password' => 'sample123',
         ]);
 
         Product::factory()->create([
@@ -81,7 +81,7 @@ class OrderApiTest extends TestCase
     {
         User::factory()->create([
             'email' => 'sample@test.com',
-            'password' => bcrypt('sample123'),
+            'password' => 'sample123',
         ]);
 
         $userData = [
@@ -104,7 +104,7 @@ class OrderApiTest extends TestCase
     {
         User::factory()->create([
             'email' => 'sample@test.com',
-            'password' => bcrypt('sample123'),
+            'password' => 'sample123',
         ]);
 
         $product = Product::factory()->create([
@@ -133,7 +133,7 @@ class OrderApiTest extends TestCase
     {
         User::factory()->create([
             'email' => 'sample@test.com',
-            'password' => bcrypt('sample123'),
+            'password' => 'sample123',
         ]);
 
         $product = Product::factory()->create([
