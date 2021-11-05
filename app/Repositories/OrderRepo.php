@@ -23,16 +23,20 @@ class OrderRepo
 
     public function mapProducts($products)
     {
-        return collect($products)->map(function($product)
-        {
-            $stock = Product::find($product["product_id"])->available_stock;
-            $quantity = $stock < $product["quantity"] ? 0 : $product["quantity"];
+        return collect($products)
+            ->map(function($product)
+            {
+                $product_data = Product::find($product['product_id']);
+                $remaining_stock = $product_data->available_stock - $product['quantity'];
+                $product_data->update([
+                    'available_stock' => $remaining_stock,
+                ]);
 
-            return [
-                'product_id' => $product["product_id"],
-                'quantity' => $quantity,
-            ];
-        });
+                return [
+                    'product_id' => $product['product_id'],
+                    'quantity' => $product['quantity'],
+                ];
+            });
     }
 
 }

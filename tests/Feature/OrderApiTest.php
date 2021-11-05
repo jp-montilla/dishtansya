@@ -15,17 +15,20 @@ class OrderApiTest extends TestCase
     public function testUnauthenticathedUser()
     {
         $userData = [
-            "product_id" => 1,
-            "quantity" => 4,
+            'products' => [
+                json_decode(json_encode([
+                    'product_id' => 1,
+                    'quantity' => 4,
+                ]))
+            ],
         ];
 
         $this->json('POST', 'api/order', $userData, ['Accept' => 'application/json'])
             ->assertStatus(401)
             ->assertJson([
-                "message" => "Unauthenticated."
+                'message' => 'Unauthenticated.'
             ]);
     }
-
 
     public function testProductIdFieldRequired()
     {
@@ -35,7 +38,11 @@ class OrderApiTest extends TestCase
         ]);
 
         $userData = [
-            "quantity" => 4,
+            'products' => [
+                json_decode(json_encode([
+                    'quantity' => 4,
+                ]))
+            ],
         ];
 
         $loginData = ['email' => 'sample@test.com', 'password' => 'sample123'];
@@ -46,10 +53,9 @@ class OrderApiTest extends TestCase
             ->json('POST', 'api/order', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Product id is required"
+                'message' => 'Product id is required'
             ]);
     }
-
 
     public function testQuantityFieldRequired()
     {
@@ -63,7 +69,11 @@ class OrderApiTest extends TestCase
         ]);
 
         $userData = [
-            "product_id" => 1,
+            'products' => [
+                json_decode(json_encode([
+                    'product_id' => 1,
+                ]))
+            ],
         ];
 
         $loginData = ['email' => 'sample@test.com', 'password' => 'sample123'];
@@ -73,7 +83,7 @@ class OrderApiTest extends TestCase
             ->json('POST', 'api/order', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Quantity is required"
+                'message' => 'Quantity is required'
             ]);
     }
 
@@ -85,8 +95,12 @@ class OrderApiTest extends TestCase
         ]);
 
         $userData = [
-            "product_id" => 1,
-            "quantity" => 1,
+            'products' => [
+                json_decode(json_encode([
+                    'product_id' => 1,
+                    'quantity' => 4,
+                ]))
+            ],
         ];
 
         $loginData = ['email' => 'sample@test.com', 'password' => 'sample123'];
@@ -96,7 +110,7 @@ class OrderApiTest extends TestCase
             ->json('POST', 'api/order', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Product not found"
+                'message' => 'Product not found'
             ]);
     }
 
@@ -113,8 +127,12 @@ class OrderApiTest extends TestCase
         ]);
 
         $userData = [
-            "product_id" => $product->id,
-            "quantity" => 1,
+            'products' => [
+                json_decode(json_encode([
+                    'product_id' => $product->id,
+                    'quantity' => 1,
+                ]))
+            ],
         ];
 
         $loginData = ['email' => 'sample@test.com', 'password' => 'sample123'];
@@ -125,7 +143,7 @@ class OrderApiTest extends TestCase
             ->json('POST', 'api/order', $userData, ['Accept' => 'application/json'])
             ->assertStatus(201)
             ->assertJson([
-                "message" => "You have successfully ordered this product."
+                'message' => 'You have successfully ordered this products.'
             ]);
     }
 
@@ -142,8 +160,12 @@ class OrderApiTest extends TestCase
         ]);
 
         $userData = [
-            "product_id" => $product->id,
-            "quantity" => 2,
+            'products' => [
+                json_decode(json_encode([
+                    'product_id' => $product->id,
+                    'quantity' => 2,
+                ]))
+            ],
         ];
 
         $loginData = ['email' => 'sample@test.com', 'password' => 'sample123'];
@@ -154,7 +176,7 @@ class OrderApiTest extends TestCase
             ->json('POST', 'api/order', $userData, ['Accept' => 'application/json'])
             ->assertStatus(400)
             ->assertJson([
-                "message" => "Failed to order this product due to unavailability of the stock"
+                'message' => 'Failed to order '.$product->name.' due to unavailability of the stock'
             ]);
     }
 
