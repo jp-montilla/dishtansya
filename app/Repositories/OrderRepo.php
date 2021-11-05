@@ -3,16 +3,19 @@
 namespace App\Repositories;
 
 use App\Models\Order;
-use App\Models\Product;
+use App\Repositories\ProductRepo;
 
 class OrderRepo
 {
 
     protected $order;
 
-    public function __construct(Order $order)
+    protected $productRepo;
+
+    public function __construct(Order $order, ProductRepo $productRepo)
     {
         $this->order = $order;
+        $this->productRepo = $productRepo;
     }
 
     public function create()
@@ -26,11 +29,7 @@ class OrderRepo
         return collect($products)
             ->map(function($product)
             {
-                $product_data = Product::find($product['product_id']);
-                $remaining_stock = $product_data->available_stock - $product['quantity'];
-                $product_data->update([
-                    'available_stock' => $remaining_stock,
-                ]);
+                $this->productRepo->updateProductStock($product['product_id'], $product['quantity']);
 
                 return [
                     'product_id' => $product['product_id'],

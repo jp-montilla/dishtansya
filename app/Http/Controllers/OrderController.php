@@ -6,24 +6,27 @@ use App\Mail\MyTestMail;
 use App\Models\Order;
 use App\Models\Product;
 use App\Repositories\OrderRepo;
-
+use App\Repositories\ProductRepo;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     protected $orderRepo;
 
-    public function __construct(OrderRepo $orderRepo)
+    public function __construct(OrderRepo $orderRepo, ProductRepo $productRepo)
     {
         $this->orderRepo = $orderRepo;
+        $this->productRepo = $productRepo;
     }
     
     public function store(OrderRequest $request)
     {
         $fields = $request->validated();
         
-        foreach ($fields['products'] as $product){
-            $product_data = Product::find($product['product_id']);
+        foreach ($fields['products'] as $product)
+        {
+            $product_data = $this->productRepo->findById($product['product_id']);
+            
             if ($product_data->available_stock < $product['quantity'])
             {
                 return response([
