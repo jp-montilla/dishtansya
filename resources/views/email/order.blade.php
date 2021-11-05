@@ -7,8 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Order placed!</h1>
-    <p>Product name: {{ $order->product->name }}</p>
-    <p>Quantity: {{ $order->quantity }}</p>
+    <h1>Order placed on these products:</h1>
+
+    @foreach ($order->products as $product)
+        <p>{{ $product->name }} - {{ $product->pivot->quantity }} piece/s</p>
+    @endforeach
+
 </body>
 </html>

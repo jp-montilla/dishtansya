@@ -2,48 +2,49 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
-use App\Mail\MyTestMail;
-use App\Models\Order;
-use App\Models\Product;
+use App\Mail\OrderMail;
 use App\Repositories\OrderRepo;
-
+use App\Repositories\ProductRepo;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     protected $orderRepo;
 
-    public function __construct(OrderRepo $orderRepo)
+    public function __construct(OrderRepo $orderRepo, ProductRepo $productRepo)
     {
         $this->orderRepo = $orderRepo;
+        $this->productRepo = $productRepo;
     }
-
-    public function store(OrderRequest $request){
+    
+    public function store(OrderRequest $request)
+    {
         $fields = $request->validated();
-
-        $product = Product::find($fields['product_id']);
-
-        if ($product->available_stock < $fields['quantity'])
+        
+        foreach ($fields['products'] as $product)
         {
-            return response([
-                'message' => 'Failed to order this product due to unavailability of the stock',
-            ], 400);
+            $product_data = $this->productRepo->findById($product['product_id']);
+
+            if ($product_data->available_stock < $product['quantity'])
+            {
+                return response([
+                    'message' => 'Failed to order '.$product_data->name.' due to unavailability of the stock',
+                ], 400);
+            }
         }
 
-        $remaining_stock = $product->available_stock - $fields['quantity'];
-        $product->update([
-            'available_stock' => $remaining_stock,
-        ]);
+        $order = $this->orderRepo->create();
 
-        $order = $this->orderRepo->create([
-            'product_id' => $product->id,
-            'quantity' => $fields['quantity'],
-        ]);
+        $order->products()->attach($this->orderRepo->mapProducts($fields['products']));
 
-        \Mail::to(auth()->user()->email)->send(new MyTestMail($order));
+        \Mail::to($order->user->email)->send(new OrderMail($order));
 
         return response([
-            'message' => 'You have successfully ordered this product.',
+            'message' => 'You have successfully ordered this products.',
         ], 201);
     }
+
+    
+
+
 }
